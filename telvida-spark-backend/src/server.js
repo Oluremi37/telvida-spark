@@ -32,6 +32,37 @@ app.use(
 app.use(express.json());
 app.use(cookieParser());
 
+// Connect DB before handling requests
+let dbReady = false;
+
+async function ensureDb() {
+  if (dbReady) return;
+
+  await sequelize.authenticate();
+
+  if (process.env.SYNC_DB === "true") {
+    await sequelize.sync({ alter: true });
+    console.log("✅ Database synced");
+  }
+
+  dbReady = true;
+  console.log("✅ Connected to PostgreSQL successfully");
+}
+
+app.use(async (req, res, next) => {
+  try {
+    await ensureDb();
+    next();
+  } catch (error) {
+    console.error("DB connection error:", error);
+    return res.status(500).json({
+      success: false,
+      message: "Database connection failed",
+      error: error.message,
+    });
+  }
+});
+
 app.get("/", (req, res) => {
   res.json({ message: "Telvida Spark Backend is running 🚀" });
 });
@@ -48,25 +79,7 @@ app.use("/api/layouts", layoutRoutes);
 app.use("/api/feedback", feedbackRoutes);
 app.use("/api/users", userRoutes);
 
-// Connect DB once (important for Vercel serverless)
-let dbReady = false;
-
-async function ensureDb() {
-  if (dbReady) return;
-
-  await sequelize.authenticate();
-
-  // Only sync/alter when you explicitly want it (first deploy / migrations)
-  if (process.env.SYNC_DB === "true") {
-    await sequelize.sync({ alter: true });
-    console.log("✅ Database synced");
-  }
-
-  dbReady = true;
-  console.log("✅ Connected to PostgreSQL successfully");
-}
-
-// Local development: normal listen
+// Local development
 async function startServer() {
   try {
     await ensureDb();
@@ -79,23 +92,9 @@ async function startServer() {
   }
 }
 
-// If running directly with node (local)
 if (require.main === module) {
   startServer();
 }
 
-// For Vercel: export a handler that ensures DB then runs Express
-module.exports = async (req, res) => {
-  try {
-    await ensureDb();
-    return app(req, res);
-  } catch (error) {
-    console.error("DB connection error:", error);
-    res.status(500).json({
-      success: false,
-      message: "Database connection failed",
-      error: error.message,
-    });
-  }
-};
-              
+// Vercel
+module.exports = app;
