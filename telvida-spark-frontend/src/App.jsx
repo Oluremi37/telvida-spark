@@ -17,6 +17,7 @@ import Schedules from "./pages/Schedules";
 import ScheduleDetail from "./pages/ScheduleDetail";
 import Feedback from "./pages/Feedback";
 import Users from "./pages/Users";
+import VerifyEmail from "./pages/VerifyEmail";
 
 
 function ProtectedRoute({ children }) {
@@ -37,6 +38,7 @@ function App() {
         <Route path="/forgot-password" element={<ForgotPassword />} />
         <Route path="/reset-password/:token" element={<ResetPassword />} />
         <Route path="/accept-invite/:token" element={<AcceptInvite />} />
+        <Route path="/verify-email/:token" element={<VerifyEmail />} />
 
         {/* Protected Routes */}
         <Route
