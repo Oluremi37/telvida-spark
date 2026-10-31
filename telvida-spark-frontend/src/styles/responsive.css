@@ -1,0 +1,81 @@
+/* Grids */
+@media (max-width: 900px) {
+  .statGrid,
+  .chartGrid,
+  .grid {
+    grid-template-columns: 1fr 1fr !important;
+  }
+}
+
+@media (max-width: 600px) {
+  .statGrid,
+  .chartGrid,
+  .grid {
+    grid-template-columns: 1fr !important;
+  }
+
+  .header {
+    flex-direction: column !important;
+    align-items: stretch !important;
+    gap: 12px;
+  }
+
+  .primaryButton {
+    width: 100%;
+  }
+
+  /* Tables → horizontal scroll on mobile */
+  .tableWrap {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .table {
+    min-width: 560px;
+  }
+
+  /* Modals */
+  .modal {
+    max-width: 100% !important;
+    margin: 0 8px;
+  }
+
+  .modalActions {
+    flex-direction: column-reverse;
+  }
+
+  .modalActions button {
+    width: 100%;
+  }
+
+  .row {
+    grid-template-columns: 1fr !important;
+  }
+}
+
+@media (max-width: 600px) {
+  /* Page headers with title + button */
+  .header {
+    flex-direction: column !important;
+    align-items: stretch !important;
+    gap: 12px !important;
+  }
+
+  .primaryButton,
+  .secondaryButton {
+    width: 100%;
+    justify-content: center;
+  }
+
+  /* If a page has multiple buttons in the header */
+  .headerActions {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    width: 100%;
+  }
+
+  .headerActions button {
+    width: 100%;
+  }
+}
