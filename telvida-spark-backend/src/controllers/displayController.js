@@ -1,6 +1,6 @@
 const { Device, DeviceCommand } = require("../models");
 const { generateDeviceToken, hashToken } = require("../utils/deviceTokens");
-const { withOnlineStatus } = require("../utils/devicestatus");
+const { withOnlineStatus } = require("../utils/deviceStatus");
 
 // ======================
 // AUTHORIZE DEVICE (admin enters the pairing code shown on the screen)
