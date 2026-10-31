@@ -21,9 +21,9 @@ function AcceptInvite() {
   useEffect(() => {
     const fetchInvitation = async () => {
       try {
-        const response = await fetch(
-          `http://localhost:5001/api/onboarding/invite/${token}`,
-        );
+       const response = await fetch(
+         `${import.meta.env.VITE_API_URL}/onboarding/invite/${token}`,
+       );
         const data = await response.json();
 
         if (data.success) {
@@ -60,7 +60,7 @@ function AcceptInvite() {
 
     try {
       const response = await fetch(
-        `http://localhost:5001/api/onboarding/accept-invite/${token}`,
+        `${import.meta.env.VITE_API_URL}/onboarding/accept-invite/${token}`,
         {
           method: "POST",
           headers: {
