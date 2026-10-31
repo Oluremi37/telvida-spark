@@ -16,15 +16,23 @@ app.use(
 app.use(express.json());
 app.use(cookieParser());
 
-// Simple test route — no DB
-app.get("/", (req, res) => {
-  res.json({
-    message: "Telvida Spark Backend is running 🚀",
-    hasDatabaseUrl: Boolean(
-      process.env.DATABASE_URL || process.env.DATABASE_URL_POOLED,
-    ),
-    hasJwt: Boolean(process.env.JWT_SECRET),
-  });
+app.get("/", async (req, res) => {
+  try {
+    const sequelize = require("./config/database");
+    await sequelize.authenticate();
+
+    res.json({
+      message: "Telvida Spark Backend is running 🚀",
+      database: "connected",
+    });
+  } catch (error) {
+    console.error("DB error:", error);
+    res.status(500).json({
+      message: "Database connection failed",
+      error: error.message,
+      name: error.name,
+    });
+  }
 });
 
 module.exports = app;
