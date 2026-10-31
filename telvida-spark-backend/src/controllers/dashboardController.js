@@ -1,6 +1,6 @@
 const { Op } = require("sequelize");
 const { Device, Media, Organization } = require("../models");
-const { isDeviceOnline } = require("../utils/devicestatus");
+const { isDeviceOnline } = require("../utils/deviceStatus");
 
 // PRD Section 2 tiers: Starter 50GB, Professional 500GB, Enterprise 2TB
 function getStorageLimitBytes(plan) {
