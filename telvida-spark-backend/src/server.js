@@ -34,5 +34,24 @@ app.get("/", async (req, res) => {
     });
   }
 });
+app.get("/debug", (req, res) => {
+  try {
+    const pg = require("pg");
+    const { Sequelize } = require("sequelize");
+
+    res.json({
+      success: true,
+      pgAvailable: !!pg.Client,
+      sequelizeAvailable: !!Sequelize,
+      nodeVersion: process.version,
+    });
+  } catch (error) {
+    res.status(500).json({
+      success: false,
+      error: error.message,
+      stack: error.stack,
+    });
+  }
+});
 
 module.exports = app;
